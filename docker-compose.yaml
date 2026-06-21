@@ -1,13 +1,14 @@
-version: "3.9"
 services:
   auth:
     restart: always
     build: ./auth
     depends_on:
-      - db
-    environment:
+      - db 
+    environment: # pass variables to the auth service 
       DB_HOST: db
-      DB_PASSWORD: my-secret-pw
+      DB_USER: ${DB_USER} 
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
     networks:
       - app-net
   ui:
@@ -20,7 +21,7 @@ services:
       AUTH_HOST: auth
       AUTH_PORT: 8080
       WEATHER_HOST: weather
-      WEATHER_PORT: 5000
+      WEATHER_PORT: 5000  # make sure this matches the port exposed by the weather service
     ports:
       - "3000:3000"
     networks:
@@ -29,18 +30,19 @@ services:
     restart: always
     build: ./weather
     environment:
-      APIKEY: ecbc396f46mshb65cbb1f82cf334p1fcc87jsna5e962a3c542
+      APIKEY: ${APIKEY}  # pass the API key as an environment variable
     networks:
       - app-net
   db:
     restart: always
-    image: mysql
+    image: mysql:8.0.25  # use image instead of build for the database service
     environment:
-      MYSQL_ROOT_PASSWORD: my-secret-pw
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
     networks:
       - app-net
     volumes:
-      - ./db-data:/var/lib/mysql
+      - ./db-data:/var/lib/mysql   # persist database data on the host machine
 
 networks:
   app-net:

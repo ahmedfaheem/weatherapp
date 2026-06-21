@@ -1,0 +1,34 @@
+# Environment files
+.env
+.env.*
+!.env-example
+
+# Docker and database runtime data
+db-data/
+
+# Node.js
+UI/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Go
+*.test
+*.out
+
+# IDE and OS files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+*.log
